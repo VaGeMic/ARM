@@ -5,6 +5,8 @@ namespace ARM
         public Form1()
         {
             InitializeComponent();
+
+            label1.Text = "Hello World";
         }
     }
 }
