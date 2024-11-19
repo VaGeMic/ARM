@@ -12,11 +12,11 @@ namespace ARM
         /// Диалоговое окно дабавления файла
         /// </summary>
         /// <returns>Возвращает один путь к файлу</returns>
-        public static string  Add_Script()
+        public static ScriptFile Add_Script()
         {
             var fileContent = string.Empty; // Содержание файла
             var filePath = string.Empty;    // Путь к файлу+имя+расширение
-
+            Dictionary<string, string> param = new Dictionary<string, string>();
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = "c:\\"; //устанавливает каталог, который отображается при первом вызове окна
@@ -29,17 +29,35 @@ namespace ARM
                 {
                     //Get the path of specified file
                     filePath = openFileDialog.FileName;
-
+                    
+                   
                     //Read the contents of the file into a stream
                     var fileStream = openFileDialog.OpenFile();
 
-                    //using (StreamReader reader = new StreamReader(fileStream))
-                    //{
-                    //    fileContent = reader.ReadToEnd();
-                    //}
-                    
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {
+                        string line;
+                        bool fl = true;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (line.Contains("#") && fl == true)
+                            {
+                                string str = line;
+                                string nameparam=line.Split(' ')[0];
+                                string valueparam = line.Split(' ')[2];
+                                param.Add(nameparam, valueparam);
+                            }
+                            else if  (line.Contains("#") && fl == false)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
                 }
-                return filePath;
+                string fileName = Path.GetFileName(filePath);
+                ScriptFile scriptFile = new ScriptFile(filePath, fileName, param);
+                return scriptFile;
             }
         }
     }
