@@ -8,9 +8,9 @@ namespace ARM
 {
     internal class ScriptFile
     {
-        string filepath {  get; set; }
-        string filename { get; set; }
-        Dictionary<string, string> param { get; set; }
+        public string filepath {  get; set; }
+        public string filename { get; set; }
+        public Dictionary<string, string> param { get; set; }
         public ScriptFile(string filepath,string filename, Dictionary<string, string> param) 
         { 
             this.filepath = filepath;
