@@ -40,14 +40,15 @@ namespace ARM
                         bool fl = true;
                         while ((line = reader.ReadLine()) != null)
                         {
-                            if (line.Contains("#") && fl == true)
+                            if (line.Contains("##") && fl == true)
                             {
+                                line = reader.ReadLine();
                                 string str = line;
                                 string nameparam=line.Split(' ')[0];
                                 string valueparam = line.Split(' ')[2];
                                 param.Add(nameparam, valueparam);
                             }
-                            else if  (line.Contains("#") && fl == false)
+                            else if  (line.Contains("##") && fl == false)
                             {
                                 break;
                             }
