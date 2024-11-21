@@ -37,21 +37,26 @@ namespace ARM
                     using (StreamReader reader = new StreamReader(fileStream))
                     {
                         string line;
-                        bool fl = true;
+                        bool fl = false;
+                        bool skip = false;
                         while ((line = reader.ReadLine()) != null)
                         {
-                            if (line.Contains("##") && fl == true)
+                            if ( fl == true && !(line.Contains("##")))
                             {
-                                line = reader.ReadLine();
+                                
                                 string str = line;
+                                //MessageBox.Show(str);
                                 string nameparam=line.Split(' ')[0];
                                 string valueparam = line.Split(' ')[2];
+                                //MessageBox.Show("name:"+nameparam + "  val:" + valueparam);
                                 param.Add(nameparam, valueparam);
                             }
-                            else if  (line.Contains("##") && fl == false)
+                            else if  (line.Contains("##") && fl == true)
                             {
                                 break;
-                            }
+                            }                            
+                            if (line.Contains("##")) fl = true;
+
                         }
                     }
 
