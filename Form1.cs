@@ -20,41 +20,43 @@ namespace ARM
 
     public partial class Form1 : Form
     {
-
+        /// <summary>
+        /// Список скриптов, у каждого есть имя, путь и аргументы
+        /// </summary>
+        internal List<ScriptFile> ScriptFiles { get; set; } = new List<ScriptFile>();
         public Form1()
         {
             InitializeComponent();
         }
 
-        public String Name(String way)
+        private void button1_Click(object sender, EventArgs e)
         {
-            int a = way.LastIndexOf('\\') + 1, b = way.LastIndexOf('.');
-            return way.Substring(a, b - a);
+            textBox1.AppendText("this is a freakin' string you arsewipe" + Environment.NewLine);
         }
 
-        public void ScripRun(List<String> wayscripts)
+        private void button2_Click(object sender, EventArgs e)
         {
-            String name;
-            int x = 0, y = 0;
-            List<Pair> buttons = new List<Pair>();
-            foreach (String i in wayscripts)
-            {
-                Pair one = new Pair();
-                Button but = new Button();
-                but.Text = Name(i);
-                one.button = but;
-                one.way = i;
-                buttons.Add(one);
-                one.button.Location = new System.Drawing.Point(x, y);
-                this.Controls.Add(one.button);
-                y += 20;
-            }
-            foreach (Pair i in buttons)
-            {
-                i.button.Click += (sender, args) => { Process.Start(i.way); };
-            }
+            NewScriptForm newScriptForm = new NewScriptForm(this);
+            newScriptForm.Show();
+        }
 
+        public void AddNewScript(string name)
+        {
+            Button scriptButton = new Button();
+            scriptButton.Text = $"{name}";
+            scriptButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            scriptButton.AutoSize = true;
+            tableLayoutPanel2.Controls.Add(scriptButton);
+            tableLayoutPanel2.RowStyles[tableLayoutPanel2.RowCount - 1].SizeType = SizeType.Absolute;
+            tableLayoutPanel2.RowStyles[tableLayoutPanel2.RowCount - 1].Height = 30;
 
+            textBox1.AppendText(Environment.NewLine + "Скрипт добавлен:" + Environment.NewLine);
+            textBox1.AppendText(ScriptFiles.Last().filename + Environment.NewLine);
+            textBox1.AppendText(ScriptFiles.Last().filepath + Environment.NewLine);
+            foreach (KeyValuePair<string, string> param in ScriptFiles.Last().param)
+            {
+                textBox1.AppendText(param.Key + ": " + param.Value + Environment.NewLine);
+            }
         }
     }
 }
