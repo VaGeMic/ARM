@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace ARM
 {
+    /// <summary>
+    /// Форма добавления скрипта
+    /// </summary>
     public partial class NewScriptForm : Form
     {
         private Form1 parentForm;
