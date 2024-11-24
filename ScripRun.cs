@@ -19,25 +19,57 @@ namespace ARM
     public partial class ScriptRun : Form
     {
         private Form1 parentForm;
-        private string outputFilePath = @"C:\Users\Роман\source\repos\ARM.git\Buffer.txt"; // Путь к файлу вывода
+        private string outputFilePath = @"..\\Buffer.txt"; // Путь к файлу вывода
+        private int buttonNumber = 0; // инлекс кнопки (т.е. самого скрипта)
 
         public ScriptRun(Form1 pForm)
         {
             parentForm = pForm;
         }
 
-        internal void ScripRun(Button scriptButton)
+        internal void ScripRun(Button scriptButton, int index)
         {
+            buttonNumber = index; // передаю индекс кнопки (скрипта)
+            parentForm.textBox1.AppendText(Environment.NewLine + "///////" + buttonNumber); // просто отладка, можешь убрать
             scriptButton.Click += (sender, args) =>
             {
                 try
                 {
+                    parentForm.textBox1.AppendText(Environment.NewLine + "///////" + buttonNumber); // посто отладка, можешь убрать
                     // Код для запуска скрипта Python
-                    string pythonPath = @"C:\Users\Роман\Documents\Python\python.exe";
-                    string scriptPath = parentForm.ScriptFiles.Last().filepath;
+                    string pythonPath ="";
+                    string pathVariable = Environment.GetEnvironmentVariable("PATH");
+                    if (pathVariable != null)
+                    {
+                        // Разделяем PATH на отдельные пути
+                        string[] paths = pathVariable.Split(';');
 
+                        // Ищем путь, содержащий "Python"
+                        pythonPath = paths.FirstOrDefault(p => Directory.Exists(p) && File.Exists(Path.Combine(p, "python.exe")));
+
+                        if (!string.IsNullOrEmpty(pythonPath))
+                        {
+                            Console.WriteLine($"Путь к Python: {pythonPath}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Путь к Python не найден в переменной PATH.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Переменная PATH не найдена.");
+                    }
+                    pythonPath += "python.exe";
+                    string scriptPath = parentForm.ScriptFiles[buttonNumber].filepath; // тут поменял Last на индекс
                     ProcessStartInfo startInfo = new ProcessStartInfo(pythonPath);
-                    startInfo.Arguments = $"\"{scriptPath}\""; // Аргументы передаются в виде строки
+                    //startInfo.Arguments = $"\"{scriptPath}\""; // Аргументы передаются в виде строки
+                    startInfo.ArgumentList.Add(scriptPath);
+                    foreach (var i in parentForm.ScriptFiles[buttonNumber].param) // тут поменял Last на индекс
+                    {
+                        startInfo.ArgumentList.Add(i.Value);
+                    }
+
                     startInfo.UseShellExecute = false;
                     startInfo.RedirectStandardError = true;
                     startInfo.RedirectStandardOutput = true;
