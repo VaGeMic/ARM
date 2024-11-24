@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -11,20 +10,17 @@ using System.Windows.Forms;
 
 namespace ARM
 {
-    /// <summary>
-    /// Форма добавления скрипта
-    /// </summary>
-    public partial class NewScriptForm : Form
+    public partial class ScriptConfigForm : Form
     {
         private Form1 parentForm;
         private ScriptFile scriptFile;
-
-        public NewScriptForm(Form1 pForm, ScriptFile script)
+        private int buttonIndex = 0;
+        public ScriptConfigForm(Form1 pForm, int index)
         {
             InitializeComponent();
+            buttonIndex = index;
             parentForm = pForm;
-            scriptFile = script;
-            //scriptFile = Adder_Script.Add_Script();
+            scriptFile = parentForm.ScriptFiles[buttonIndex];
 
             textBox1.Text = scriptFile.filename;
             textBox2.Text = scriptFile.filepath;
@@ -48,7 +44,6 @@ namespace ARM
                 attributeTLPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
                 attributeTLPanel.BorderStyle = BorderStyle.FixedSingle;
 
-
                 tableLayoutPanel1.Controls.Add(attributeTLPanel);
                 tableLayoutPanel1.RowStyles[tableLayoutPanel1.RowStyles.Count - 1].Height = 60;
             }
@@ -56,18 +51,22 @@ namespace ARM
 
         private void button1_Click(object sender, EventArgs e)
         {
-            scriptFile.filename = textBox1.Text;
-            scriptFile.filepath = textBox2.Text;
+            parentForm.ScriptFiles[buttonIndex].filename = textBox1.Text;
+            parentForm.ScriptFiles[buttonIndex].filepath = textBox2.Text;
 
             int index = 0;
             foreach (KeyValuePair<string, string> param in scriptFile.param)
             {
-                scriptFile.param[param.Key] = tableLayoutPanel1.Controls[index++].Controls[1].Text;
+                parentForm.ScriptFiles[buttonIndex].param[param.Key] = tableLayoutPanel1.Controls[index++].Controls[1].Text;
             }
-            parentForm.ScriptFiles.Add(scriptFile);
-            parentForm.AddNewScript(textBox1.Text);
+            parentForm.textBox1.AppendText(Environment.NewLine + "Скрипт изменён:" + Environment.NewLine);
+            parentForm.textBox1.AppendText(parentForm.ScriptFiles[buttonIndex].filename + Environment.NewLine);
+            parentForm.textBox1.AppendText(parentForm.ScriptFiles[buttonIndex].filepath + Environment.NewLine);
+            foreach (KeyValuePair<string, string> param in parentForm.ScriptFiles[buttonIndex].param)
+            {
+                parentForm.textBox1.AppendText(param.Key + ": " + param.Value + Environment.NewLine);
+            }
             Close();
         }
-
     }
 }
