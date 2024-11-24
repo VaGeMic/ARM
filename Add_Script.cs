@@ -49,6 +49,8 @@ namespace ARM
                             {
                                 string nameparam = line.Split(' ')[0];
                                 string valueparam = line.Split(' ')[2];
+                                valueparam = valueparam.Replace(@"'", @"");
+                                //MessageBox.Show("name:"+nameparam + "  val:" + valueparam);
                                 param.Add(nameparam, valueparam);
                             }
                         }

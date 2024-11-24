@@ -11,6 +11,7 @@
         ///  Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// 
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -193,15 +194,15 @@
 
         #endregion
 
-        private SplitContainer splitContainer1;
-        private TextBox textBox1;
-        private Button button1;
-        private Label label1;
-        private Label label2;
-        private TextBox textBox2;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Label label3;
-        private Button button2;
-        private TableLayoutPanel tableLayoutPanel2;
+        protected SplitContainer splitContainer1;
+        public TextBox textBox1;
+        protected Button button1;
+        protected Label label1;
+        protected Label label2;
+        public TextBox textBox2;
+        protected TableLayoutPanel tableLayoutPanel1;
+        protected Label label3;
+        protected Button button2;
+        public TableLayoutPanel tableLayoutPanel2;
     }
 }
