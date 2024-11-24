@@ -32,11 +32,6 @@ namespace ARM
             InitializeComponent();
             script = new ScriptRun(this);
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            textBox1.AppendText("this is a freakin' string you arsewipe" + Environment.NewLine);
-        }
         /// <summary>
         /// Кнопка добавления скрипта, вызывает форму добавления скрипта
         /// </summary>
@@ -63,6 +58,14 @@ namespace ARM
             tableLayoutPanel2.RowStyles[tableLayoutPanel2.RowCount - 1].SizeType = SizeType.Absolute;
             tableLayoutPanel2.RowStyles[tableLayoutPanel2.RowCount - 1].Height = 30;
 
+            Button configButton = new Button();
+            configButton.Text = "...";
+            configButton.AutoSize = true;
+            configButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            configButton.Click += (sender, args) => ConfigButton_Click(sender, args);
+
+            tableLayoutPanel2.Controls.Add(configButton);
+
             textBox1.AppendText(Environment.NewLine + "Скрипт добавлен:" + Environment.NewLine);
             textBox1.AppendText(ScriptFiles.Last().filename + Environment.NewLine);
             textBox1.AppendText(ScriptFiles.Last().filepath + Environment.NewLine);
@@ -70,6 +73,11 @@ namespace ARM
             {
                 textBox1.AppendText(param.Key + ": " + param.Value + Environment.NewLine);
             }
+        }
+        public void ConfigButton_Click(object sender, EventArgs e)
+        {
+            ScriptConfigForm scriptConfigForm = new ScriptConfigForm(this);
+            scriptConfigForm.Show();
         }
     }
 }
