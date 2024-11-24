@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Text;
 
 namespace ARM
 {
@@ -24,9 +26,11 @@ namespace ARM
         /// Список скриптов, у каждого есть имя, путь и аргументы
         /// </summary>
         internal List<ScriptFile> ScriptFiles { get; set; } = new List<ScriptFile>();
+        public ScriptRun script;
         public Form1()
         {
             InitializeComponent();
+            script = new ScriptRun(this);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,6 +50,8 @@ namespace ARM
             scriptButton.Text = $"{name}";
             scriptButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             scriptButton.AutoSize = true;
+            script.ScripRun(scriptButton);
+            //scriptButton.Click += (sender, args) => { Process.Start(new ProcessStartInfo(parentForm.ScriptFiles.Last().filepath) { UseShellExecute = true }); };
             tableLayoutPanel2.Controls.Add(scriptButton);
             tableLayoutPanel2.RowStyles[tableLayoutPanel2.RowCount - 1].SizeType = SizeType.Absolute;
             tableLayoutPanel2.RowStyles[tableLayoutPanel2.RowCount - 1].Height = 30;
