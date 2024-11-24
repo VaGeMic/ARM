@@ -97,7 +97,10 @@ namespace ARM
             {
                 using (StreamReader reader = new StreamReader(outputFilePath))
                 {
+               
                     string line;
+                    line = "Script executed successfully";
+                    parentForm.textBox2.AppendText(line + Environment.NewLine);
                     while ((line = reader.ReadLine()) != null)
                     {
                         parentForm.textBox1.AppendText(line + Environment.NewLine);
