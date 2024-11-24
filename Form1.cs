@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ARM
 {
@@ -65,8 +65,10 @@ namespace ARM
                     // Если файл с расширением .py, добавляем его путь в TextBox
                     //MessageBox.Show("This file is .py");
 
-                    ScriptFile sf = Adder_Script.Add_Script_with_drag_n_drop(file);
-                    MessageBox.Show($"{sf.filename}");
+                    ScriptFile script = Adder_Script.Add_Script_with_drag_n_drop(file);
+                    NewScriptForm newScriptForm = new NewScriptForm(this, script); // САША!!! чекай вот это
+                    newScriptForm.Show();
+                    //MessageBox.Show($"{sf.filename}");
                 }
                 else
                 {

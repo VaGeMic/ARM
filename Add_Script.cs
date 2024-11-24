@@ -97,7 +97,7 @@ namespace ARM
                             valueparam = valueparam.Replace(@"'", @"");
                             //valueparam = valueparam.Replace(@"\\", @"\");
 
-                            MessageBox.Show("name:"+nameparam + "  val:" + valueparam);
+                            //MessageBox.Show("name:"+nameparam + "  val:" + valueparam);
                             param.Add(nameparam, valueparam);
                         }
                     }
