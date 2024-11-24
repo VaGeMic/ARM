@@ -14,11 +14,13 @@ namespace ARM
     {
         private Form1 parentForm;
         private ScriptFile scriptFile;
-        public ScriptConfigForm(Form1 pForm)
+        private int buttonIndex = 0;
+        public ScriptConfigForm(Form1 pForm, int index)
         {
             InitializeComponent();
+            buttonIndex = index;
             parentForm = pForm;
-            scriptFile = parentForm.ScriptFiles.Last();
+            scriptFile = parentForm.ScriptFiles[buttonIndex];
 
             textBox1.Text = scriptFile.filename;
             textBox2.Text = scriptFile.filepath;
@@ -49,18 +51,18 @@ namespace ARM
 
         private void button1_Click(object sender, EventArgs e)
         {
-            parentForm.ScriptFiles.Last().filename = textBox1.Text;
-            parentForm.ScriptFiles.Last().filepath = textBox2.Text;
+            parentForm.ScriptFiles[buttonIndex].filename = textBox1.Text;
+            parentForm.ScriptFiles[buttonIndex].filepath = textBox2.Text;
 
             int index = 0;
             foreach (KeyValuePair<string, string> param in scriptFile.param)
             {
-                parentForm.ScriptFiles.Last().param[param.Key] = tableLayoutPanel1.Controls[index++].Controls[1].Text;
+                parentForm.ScriptFiles[buttonIndex].param[param.Key] = tableLayoutPanel1.Controls[index++].Controls[1].Text;
             }
             parentForm.textBox1.AppendText(Environment.NewLine + "Скрипт изменён:" + Environment.NewLine);
-            parentForm.textBox1.AppendText(parentForm.ScriptFiles.Last().filename + Environment.NewLine);
-            parentForm.textBox1.AppendText(parentForm.ScriptFiles.Last().filepath + Environment.NewLine);
-            foreach (KeyValuePair<string, string> param in parentForm.ScriptFiles.Last().param)
+            parentForm.textBox1.AppendText(parentForm.ScriptFiles[buttonIndex].filename + Environment.NewLine);
+            parentForm.textBox1.AppendText(parentForm.ScriptFiles[buttonIndex].filepath + Environment.NewLine);
+            foreach (KeyValuePair<string, string> param in parentForm.ScriptFiles[buttonIndex].param)
             {
                 parentForm.textBox1.AppendText(param.Key + ": " + param.Value + Environment.NewLine);
             }

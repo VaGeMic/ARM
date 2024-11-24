@@ -20,18 +20,22 @@ namespace ARM
     {
         private Form1 parentForm;
         private string outputFilePath = @"..\\Buffer.txt"; // Путь к файлу вывода
+        private int buttonNumber = 0; // инлекс кнопки (т.е. самого скрипта)
 
         public ScriptRun(Form1 pForm)
         {
             parentForm = pForm;
         }
 
-        internal void ScripRun(Button scriptButton)
+        internal void ScripRun(Button scriptButton, int index)
         {
+            buttonNumber = index; // передаю индекс кнопки (скрипта)
+            parentForm.textBox1.AppendText(Environment.NewLine + "///////" + buttonNumber); // просто отладка, можешь убрать
             scriptButton.Click += (sender, args) =>
             {
                 try
                 {
+                    parentForm.textBox1.AppendText(Environment.NewLine + "///////" + buttonNumber); // посто отладка, можешь убрать
                     // Код для запуска скрипта Python
                     string pythonPath ="";
                     string pathVariable = Environment.GetEnvironmentVariable("PATH");
@@ -57,11 +61,11 @@ namespace ARM
                         Console.WriteLine("Переменная PATH не найдена.");
                     }
                     pythonPath += "python.exe";
-                    string scriptPath = parentForm.ScriptFiles.Last().filepath;
+                    string scriptPath = parentForm.ScriptFiles[buttonNumber].filepath; // тут поменял Last на индекс
                     ProcessStartInfo startInfo = new ProcessStartInfo(pythonPath);
                     //startInfo.Arguments = $"\"{scriptPath}\""; // Аргументы передаются в виде строки
                     startInfo.ArgumentList.Add(scriptPath);
-                    foreach (var i in parentForm.ScriptFiles.Last().param)
+                    foreach (var i in parentForm.ScriptFiles[buttonNumber].param) // тут поменял Last на индекс
                     {
                         startInfo.ArgumentList.Add(i.Value);
                     }

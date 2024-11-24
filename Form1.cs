@@ -52,7 +52,8 @@ namespace ARM
             scriptButton.Text = $"{name}";
             scriptButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             scriptButton.AutoSize = true;
-            script.ScripRun(scriptButton);
+            scriptButton.Name = $"scriptButton{ScriptFiles.Count - 1}";
+            script.ScripRun(scriptButton, ScriptFiles.Count - 1); // передаю индекс кнопки
             //scriptButton.Click += (sender, args) => { Process.Start(new ProcessStartInfo(parentForm.ScriptFiles.Last().filepath) { UseShellExecute = true }); };
             tableLayoutPanel2.Controls.Add(scriptButton);
             tableLayoutPanel2.RowStyles[tableLayoutPanel2.RowCount - 1].SizeType = SizeType.Absolute;
@@ -63,6 +64,7 @@ namespace ARM
             configButton.AutoSize = true;
             configButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             configButton.Click += (sender, args) => ConfigButton_Click(sender, args);
+            configButton.Name = $"configButton{ScriptFiles.Count - 1}";
 
             tableLayoutPanel2.Controls.Add(configButton);
 
@@ -76,7 +78,11 @@ namespace ARM
         }
         public void ConfigButton_Click(object sender, EventArgs e)
         {
-            ScriptConfigForm scriptConfigForm = new ScriptConfigForm(this);
+            int number = 0;
+            int len = "configButton".Length;
+            number = int.Parse((sender as Button).Name.Substring(len));
+
+            ScriptConfigForm scriptConfigForm = new ScriptConfigForm(this, number); // тут тоже передаю индекс кнопки, но всё работает
             scriptConfigForm.Show();
         }
     }
