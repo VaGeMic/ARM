@@ -11,12 +11,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ARM
 {
     public struct Pair
     {
-        public Button button;
+        public System.Windows.Forms.Button button;
         public String way;
     }
 
@@ -31,7 +32,54 @@ namespace ARM
         {
             InitializeComponent();
             script = new ScriptRun(this);
+            tableLayoutPanel2.DragDrop += TextBox_DragDrop;
+            tableLayoutPanel2.DragEnter += TextBox_DragEnter;
+
+
         }
+
+        private void TextBox_DragEnter(object sender, DragEventArgs e)
+        {
+            // Проверяем, что перетаскиваются файлы
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy; // Устанавливаем эффект копирования
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None; // Отклоняем
+            }
+        }
+
+        // Обработка события DragDrop (добавление файлов)
+        private void TextBox_DragDrop(object sender, DragEventArgs e)
+        {
+            // Получаем массив путей к файлам
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string file in files)
+            {
+                // диалоговое окно с файлом
+                if (Path.GetExtension(file).Equals(".py", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Если файл с расширением .py, добавляем его путь в TextBox
+                    //MessageBox.Show("This file is .py");
+
+                    ScriptFile sf = Adder_Script.Add_Script_with_drag_n_drop(file);
+                    MessageBox.Show($"{sf.filename}");
+                }
+                else
+                {
+                    MessageBox.Show("This file is not .py!!!");
+                }
+            }
+        }
+
+
+
+
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -53,7 +101,7 @@ namespace ARM
         /// <param name="name">Название скрипта</param>
         public void AddNewScript(string name)
         {
-            Button scriptButton = new Button();
+            System.Windows.Forms.Button scriptButton = new System.Windows.Forms.Button();
             scriptButton.Text = $"{name}";
             scriptButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             scriptButton.AutoSize = true;

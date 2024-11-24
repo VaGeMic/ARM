@@ -116,6 +116,7 @@
             // 
             // tableLayoutPanel2
             // 
+            tableLayoutPanel2.AllowDrop = true;
             tableLayoutPanel2.AutoScroll = true;
             tableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutPanel2.ColumnCount = 2;

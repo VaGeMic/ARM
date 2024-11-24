@@ -50,6 +50,8 @@ namespace ARM
                                 string nameparam = line.Split(' ')[0];
                                 string valueparam = line.Split(' ')[2];
                                 valueparam = valueparam.Replace(@"'", @"");
+                                //valueparam = valueparam.Replace(@"\\", @"\");
+
                                 //MessageBox.Show("name:"+nameparam + "  val:" + valueparam);
                                 param.Add(nameparam, valueparam);
                             }
@@ -57,6 +59,51 @@ namespace ARM
                     }
 
                 }
+                string fileName = Path.GetFileName(filePath);
+                ScriptFile scriptFile = new ScriptFile(filePath, fileName, param);
+                return scriptFile;
+            }
+        }
+
+
+        public static ScriptFile Add_Script_with_drag_n_drop(string path)
+        {
+            var fileContent = string.Empty; // Содержание файла
+            var filePath = string.Empty;    // Путь к файлу+имя+расширение
+            Dictionary<string, string> param = new Dictionary<string, string>();
+            using (FileStream fs = File.OpenRead(path))
+            {
+                
+                //Get the path of specified file
+                filePath = path;
+
+                //Read the contents of the file into a stream
+
+                using (StreamReader reader = new StreamReader(fs))
+                {
+                    string line;
+                    int sharpsCounter = 0;
+                    while ((line = reader.ReadLine()) != null && sharpsCounter < 2)
+                    {
+                        if (line.Contains("##"))
+                        {
+                            sharpsCounter++;
+                            continue;
+                        }
+                        if (sharpsCounter == 1)
+                        {
+                            string nameparam = line.Split(' ')[0];
+                            string valueparam = line.Split(' ')[2];
+                            valueparam = valueparam.Replace(@"'", @"");
+                            //valueparam = valueparam.Replace(@"\\", @"\");
+
+                            MessageBox.Show("name:"+nameparam + "  val:" + valueparam);
+                            param.Add(nameparam, valueparam);
+                        }
+                    }
+                }
+
+                
                 string fileName = Path.GetFileName(filePath);
                 ScriptFile scriptFile = new ScriptFile(filePath, fileName, param);
                 return scriptFile;
