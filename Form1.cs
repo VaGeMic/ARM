@@ -25,7 +25,7 @@ namespace ARM
         /// <summary>
         /// Список скриптов, у каждого есть имя, путь и аргументы
         /// </summary>
-        internal List<ScriptFile> ScriptFiles { get; set; } = new List<ScriptFile>();
+        public List<ScriptFile> ScriptFiles { get; set; } = new List<ScriptFile>();
         public ScriptRun script;
         public Form1()
         {
@@ -39,7 +39,9 @@ namespace ARM
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            NewScriptForm newScriptForm = new NewScriptForm(this);
+            ScriptFile script = new ScriptFile();
+            script = Adder_Script.Add_Script();
+            NewScriptForm newScriptForm = new NewScriptForm(this, script); // САША!!! чекай вот это
             newScriptForm.Show();
         }
         /// <summary>

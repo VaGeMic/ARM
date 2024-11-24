@@ -19,11 +19,12 @@ namespace ARM
         private Form1 parentForm;
         private ScriptFile scriptFile;
 
-        public NewScriptForm(Form1 pForm)
+        public NewScriptForm(Form1 pForm, ScriptFile script)
         {
             InitializeComponent();
             parentForm = pForm;
-            scriptFile = Adder_Script.Add_Script();
+            scriptFile = script;
+            //scriptFile = Adder_Script.Add_Script();
 
             textBox1.Text = scriptFile.filename;
             textBox2.Text = scriptFile.filepath;

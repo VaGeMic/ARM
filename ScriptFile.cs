@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace ARM
 {
-    internal class ScriptFile
+    public class ScriptFile
     {
-        public string filepath {  get; set; }
-        public string filename { get; set; }
-        public Dictionary<string, string> param { get; set; }
+        public string filepath { get; set; } = string.Empty;
+        public string filename { get; set; } = string.Empty;
+        public Dictionary<string, string> param { get; set; } = null;
+        public ScriptFile() {}
         public ScriptFile(string filepath,string filename, Dictionary<string, string> param) 
         { 
             this.filepath = filepath;
