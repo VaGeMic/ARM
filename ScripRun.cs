@@ -19,7 +19,7 @@ namespace ARM
     public partial class ScriptRun : Form
     {
         private Form1 parentForm;
-        private string outputFilePath = @"C:\Users\Роман\source\repos\ARM.git\Buffer.txt"; // Путь к файлу вывода
+        private string outputFilePath = @"..\\Buffer.txt"; // Путь к файлу вывода
 
         public ScriptRun(Form1 pForm)
         {
@@ -33,11 +33,39 @@ namespace ARM
                 try
                 {
                     // Код для запуска скрипта Python
-                    string pythonPath = @"C:\Users\Роман\Documents\Python\python.exe";
-                    string scriptPath = parentForm.ScriptFiles.Last().filepath;
+                    string pythonPath ="";
+                    string pathVariable = Environment.GetEnvironmentVariable("PATH");
+                    if (pathVariable != null)
+                    {
+                        // Разделяем PATH на отдельные пути
+                        string[] paths = pathVariable.Split(';');
 
+                        // Ищем путь, содержащий "Python"
+                        pythonPath = paths.FirstOrDefault(p => Directory.Exists(p) && File.Exists(Path.Combine(p, "python.exe")));
+
+                        if (!string.IsNullOrEmpty(pythonPath))
+                        {
+                            Console.WriteLine($"Путь к Python: {pythonPath}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Путь к Python не найден в переменной PATH.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Переменная PATH не найдена.");
+                    }
+                    pythonPath += "python.exe";
+                    string scriptPath = parentForm.ScriptFiles.Last().filepath;
                     ProcessStartInfo startInfo = new ProcessStartInfo(pythonPath);
-                    startInfo.Arguments = $"\"{scriptPath}\""; // Аргументы передаются в виде строки
+                    //startInfo.Arguments = $"\"{scriptPath}\""; // Аргументы передаются в виде строки
+                    startInfo.ArgumentList.Add(scriptPath);
+                    foreach (var i in parentForm.ScriptFiles.Last().param)
+                    {
+                        startInfo.ArgumentList.Add(i.Value);
+                    }
+
                     startInfo.UseShellExecute = false;
                     startInfo.RedirectStandardError = true;
                     startInfo.RedirectStandardOutput = true;
